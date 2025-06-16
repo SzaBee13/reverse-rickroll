@@ -57,8 +57,13 @@ def get_random_response(mention):
 
 @client.event
 async def on_ready():
-    print(f"✅ Bot is online as {client.user}")
-    activity = discord.Activity(type=discord.ActivityType.watching, name="Rick Astley - Never Gonna Give You Up")
+    print(f"✅ Bot is online as {client.user}!")
+
+    # 👀 Set presence
+    activity = discord.Activity(
+        type=discord.ActivityType.watching,
+        name="Rick Astley - Never Gonna Give You Up"
+    )
     await client.change_presence(activity=activity)
 
 @client.event
@@ -94,3 +99,5 @@ async def handle_rickroll(message):
         print("❌ Missing permissions to delete messages.")
     except Exception as e:
         print(f"⚠️ Error: {e}")
+
+client.run(TOKEN)
