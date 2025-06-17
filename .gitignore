@@ -1,2 +1,4 @@
 .env
 run-docker.md
+/web/node_modules
+/web/package-lock.json
