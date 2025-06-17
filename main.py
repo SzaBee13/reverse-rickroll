@@ -60,10 +60,26 @@ SUS_TEXT_PHRASES = [
     "Don't tell me you're too blind to see"
 ]
 
+SUS_FILE_KEYWORDS = [
+    "rickroll", "rick", "roll", "rick_roll", "rick-roll"
+]
+
+SUS_FILE_EXTENSIONS = [
+    ".mp4", ".mov", ".avi", ".webm", ".mkv", ".gif",
+    "png", "jpeg", "jpg", "svg", "webp"
+]
+
 intents = discord.Intents.default()
 intents.message_content = True
 intents.messages = True
 client = discord.Client(intents=intents)
+
+def has_sus_file_upload(message):
+    for attachment in message.attachments:
+        filename = attachment.filename.lower()
+        if any(kw in filename for kw in SUS_FILE_KEYWORDS) and any(filename.endswith(ext) for ext in SUS_FILE_EXTENSIONS):
+            return True, filename
+    return False, None
 
 def has_sus_text(content):
     content_lower = content.lower()
@@ -115,8 +131,9 @@ async def on_message(message):
     has_sticker = bool(message.stickers)
     has_emojis = has_sus_rick_emoji(content)
     has_sus_text_content = has_sus_text(content)
+    has_sus_file, sus_filename = has_sus_file_upload(message)
 
-    if is_roll or has_sticker or has_emojis or has_sus_text_content:
+    if is_roll or has_sticker or has_emojis or has_sus_text_content or has_sus_file:
         try:
             await message.delete()
 
@@ -127,7 +144,9 @@ async def on_message(message):
             elif has_emojis:
                 roast = f"😏 Emojis won’t save you, {message.author.mention}… reverse time: <{random.choice(DECOY_LINKS)}>"
             elif has_sus_text_content:
-                roast = f"📜 Quoting ancient meme scrolls won’t save you, {message.author.mention}!\n{random.choice(DECOY_LINKS)}"
+                roast = f"📜 Quoting ancient meme scrolls won’t save you, {message.author.mention}!\n<{random.choice(DECOY_LINKS)}>"
+            elif has_sus_file:
+                roast = f"📁 A wild *sussy file* appeared: `{sus_filename}`\n{message.author.mention}, reverse time!\n<{random.choice(DECOY_LINKS)}>"
 
             msg = await message.channel.send(roast)
             await msg.add_reaction("💀")

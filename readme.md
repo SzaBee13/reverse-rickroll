@@ -8,6 +8,7 @@
 - 🧾 Stickers in messages
 - 😂 Custom emoji names like `:rickroll:` or `:rick-roll:`
 - ✏️ Suspicious text phrases, line from the song
+- 👀 Files uploaded having a sus name.
 - 🔁 And then... flips it back on the sender 😈
 
 ## 🛠 Setup
