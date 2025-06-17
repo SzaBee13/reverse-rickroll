@@ -46,6 +46,7 @@ const Navbar = ({ toggleTheme }) => {
             <div className="navbar-links" id="navbar-links" ref={linksRef}>
                 <Link to="/" className="navbar-link" onClick={() => setOpen(false)}>Home</Link>
                 <Link to="/documentation" className="navbar-link" onClick={() => setOpen(false)}>Documentation</Link>
+                <a href="https://discord.com/oauth2/authorize?client_id=1384237022826336316&permissions=10304&integration_type=0&scope=bot" target="_blank">Add To Server</a>
                 <a
                     href="https://szabee13.pages.dev"
                     target="_blank"
