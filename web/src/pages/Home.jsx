@@ -39,7 +39,9 @@ const Home = () => {
                     Clone the repository and follow the instructions in <b>README.md</b>.<br />
                     You can run the bot using <b>Docker</b> or <b>Python</b>.
                 </p>
-                <img src="/discord.svg" alt="Discord logo" className="discord-img" />
+                <div className="logos">
+                    <img src="/discord.png" alt="Discord logo" className="discord-img" />
+                </div>
             </section>
         </div>
     );

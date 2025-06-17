@@ -150,8 +150,14 @@
     width: 80px;
     margin-top: 1em;
     border-radius: 16px;
-    background: #fff;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.logos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 /* Mobile styles */
