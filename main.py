@@ -30,10 +30,44 @@ SUS_EMOJIS = [
     "rickroll", "rick", "roll", "rick_roll", "rick-roll"
 ]
 
+SUS_TEXT_PHRASES = [
+    "give you up",
+    "nggyu",
+    "rick roll",
+    "never gonna"
+    
+    "we're no strangers to love",
+    "You know the rules and so do I",
+    "A full commitment's what I'm thinkin' of",
+    "You wouldn't get this from any other guy",
+    
+    "I just wanna tell you how I'm feeling",
+    "Gotta make you understand",
+    
+    "never gonna give you up",
+    "never gonna let you down",
+    "never gonna run around and desert you",
+    "never gonna make you cry",
+    "never gonna say goodbye",
+    "never gonna tell a lie and hurt you",
+    
+    "We've known each other for so long",
+    "Your heart's been aching, but you're too shy to say it",
+    "Inside, we both know what's been going on",
+    "We know the game and we're gonna play it",
+    
+    "And if you ask me how I'm feeling",
+    "Don't tell me you're too blind to see"
+]
+
 intents = discord.Intents.default()
 intents.message_content = True
 intents.messages = True
 client = discord.Client(intents=intents)
+
+def has_sus_text(content):
+    content_lower = content.lower()
+    return any(phrase in content_lower for phrase in SUS_TEXT_PHRASES)
 
 def get_random_response(mention):
     bait = random.choice(DECOY_LINKS)
@@ -80,8 +114,9 @@ async def on_message(message):
     is_roll = video_id and is_rickroll(video_id)
     has_sticker = bool(message.stickers)
     has_emojis = has_sus_rick_emoji(content)
+    has_sus_text_content = has_sus_text(content)
 
-    if is_roll or has_sticker or has_emojis:
+    if is_roll or has_sticker or has_emojis or has_sus_text_content:
         try:
             await message.delete()
 
@@ -91,6 +126,8 @@ async def on_message(message):
                 roast = f"🎟️ {message.author.mention} tried to sneak a sticker past me... I SEE YOU 👁️\n<{random.choice(DECOY_LINKS)}>"
             elif has_emojis:
                 roast = f"😏 Emojis won’t save you, {message.author.mention}… reverse time: <{random.choice(DECOY_LINKS)}>"
+            elif has_sus_text_content:
+                roast = f"📜 Quoting ancient meme scrolls won’t save you, {message.author.mention}!\n{random.choice(DECOY_LINKS)}"
 
             msg = await message.channel.send(roast)
             await msg.add_reaction("💀")
