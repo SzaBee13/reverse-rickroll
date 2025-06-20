@@ -27,6 +27,13 @@ const Navbar = ({ toggleTheme }) => {
         }
     }, [open]);
 
+    // Only close nav on mobile after clicking a link
+    const handleNavLinkClick = () => {
+        if (window.innerWidth < MOBILE_BREAKPOINT) {
+            setOpen(false);
+        }
+    };
+
     return (
         <nav className="navbar">
             <div className="navbar-brand">
@@ -44,16 +51,16 @@ const Navbar = ({ toggleTheme }) => {
                 <span />
             </button>
             <div className="navbar-links" id="navbar-links" ref={linksRef}>
-                <Link to="/" className="navbar-link" onClick={() => setOpen(false)}>Home</Link>
-                <Link to="/documentation" className="navbar-link" onClick={() => setOpen(false)}>Documentation</Link>
-                <a href="https://discord.com/oauth2/authorize?client_id=1384237022826336316&permissions=10304&integration_type=0&scope=bot" target="_blank">Add To Server</a>
+                <Link to="/" className="navbar-link" onClick={handleNavLinkClick}>Home</Link>
+                <Link to="/documentation" className="navbar-link" onClick={handleNavLinkClick}>Documentation</Link>
+                <a href="https://discord.com/oauth2/authorize?client_id=1384237022826336316&permissions=10304&integration_type=0&scope=bot" target="_blank" rel="noopener noreferrer" onClick={handleNavLinkClick}>Add To Server</a>
                 <a
                     href="https://szabee13.pages.dev"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="navbar-link"
                     style={{ fontWeight: "bold" }}
-                    onClick={() => setOpen(false)}
+                    onClick={handleNavLinkClick}
                 >
                     Creator
                 </a>
