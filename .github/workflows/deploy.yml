@@ -27,10 +27,10 @@ jobs:
 
       - name: 🏗️ Build Docker Image
         run: |
-          reverse_rickroll=ghcr.io/SzaBee13/reverse-rickroll:latest
+          reverse_rickroll=ghcr.io/reverse-rickroll:latest
           docker build -t $reverse_rickroll .
 
       - name: 🚀 Push Image to GHCR
         run: |
-          reverse_rickroll=ghcr.io/SzaBee13/reverse-rickroll:latest
+          reverse_rickroll=ghcr.io/reverse-rickroll:latest
           docker push $reverse_rickroll
