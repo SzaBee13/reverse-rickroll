@@ -1,77 +1,59 @@
 import React from "react";
 
 const Documentation = () => {
-    return (
-        <div className="documentation container">
-            <h1>Documentation</h1>
-            <div>
-                <h1 id="reverse-rickroll-bot">🤖 Reverse RickRoll Bot</h1>
-                <blockquote>
-                    <p>
-                        A Discord bot that hunts down RickRolls, sussy emojis,
-                        and sneaky stickers… then flips the script. 🔁💥
-                    </p>
-                </blockquote>
-                <h2 id="what-it-detects">🔍 What it Detects</h2>
-                <ul>
-                    <li>🎥 YouTube RickRoll links</li>
-                    <li>🧾 Stickers in messages</li>
-                    <li>
-                        😂 Custom emoji names like <code>:rickroll:</code> or{" "}
-                        <code>:rick-roll:</code>
-                    </li>
-                    <li>✏️ Suspicious text phrases, line from the song</li>
-                    <li>👀 Files uploaded having a sus name.</li>
-                    <li>🔁 And then... flips it back on the sender 😈</li>
-                </ul>
-                <h2 id="setup">🛠 Setup</h2>
-                <ol>
-                    <li>Clone the repo</li>
-                    <li>
-                        Add you token to <code>.env</code> file{" "}
-                        <code>DISCORD_TOKEN=&lt;token&gt;</code>
-                    </li>
-                    <li>Create a settings.json file
-                        <code>settings.json</code> in the root directory
-                    </li>
-                </ol>
-                <h3>NOTE! YOU CAN ONLY USE ITS IF YOU WANT TO CONTRIBUTE TO THE REPO</h3>
-                <h3 id="docker">Docker</h3>
-                <ol>
-                    <li>
-                        Docker build:{" "}
-                        <code>docker build -t &lt;name&gt; .</code>
-                    </li>
-                    <li>
-                        Remove and stop previous{" "}
-                        <code>
-                            docker stop &lt;name&gt; docker rm &lt;name&gt;
-                        </code>
-                    </li>
-                    <li>
-                        Docker run:{" "}
-                        <code>
-                            docker run --name &lt;name&gt; -d &lt;name&gt;
-                        </code>
-                    </li>
-                </ol>
-                <h3 id="python">Python</h3>
-                <ol>
-                    <li>
-                        Pip install:{" "}
-                        <code>pip install -r requirements.txt</code>
-                    </li>
-                    <li>
-                        Run the bot: <code>python main.py</code>
-                    </li>
-                </ol>
-                <h2 id="settings">Setting Up</h2>
-                <ol>
-                    <li>Use `/settings` command in a guild</li>
-                </ol>
-            </div>
-        </div>
-    );
+  return (
+    <div className="documentation container">
+      <h1>Documentation</h1>
+      <div>
+        <h1 id="-reverse-rickroll-bot">🤖 Reverse RickRoll Bot</h1>
+        <blockquote>
+          <p>
+            A Discord bot that hunts down RickRolls, sussy emojis, and sneaky
+            stickers… then flips the script. 🔁💥
+          </p>
+        </blockquote>
+        <h2 id="what-it-detects">🔍 What it Detects</h2>
+        <ul>
+          <li>🎥 YouTube RickRoll links</li>
+          <li>🧾 Stickers in messages</li>
+          <li>
+            😂 Custom emoji names like <code>:rickroll:</code> or{" "}
+            <code>:rick-roll:</code>
+          </li>
+          <li>✏️ Suspicious text phrases, line from the song</li>
+          <li>👀 Files uploaded having a sus name.</li>
+          <li>🔁 And then... flips it back on the sender 😈</li>
+        </ul>
+        <h2 id="setup-using-docker">🛠 Setup Using Docker</h2>
+        <p>NOTE! YOU CAN ONLY USE THE SOFTWARE FOR YOURSELF IF YOU WANT TO CONTRIBUTE TO THE REPO FOR TEST ELSE PLEASE USE THE OFFICIAL REPO</p>
+        <pre>
+          <code class="lang-sh">
+            docker pull ghcr.io/szabee13/reverse-rickroll:latest touch reports
+            <span class="hljs-selector-class">.log</span>
+            nano <span class="hljs-selector-class">.env</span>
+            nano settings<span class="hljs-selector-class">.json</span>{" "}
+            <span class="hljs-string">"{}"</span>
+            docker run -d \ --name reverse-rickroll-bot \ --env-file{" "}
+            <span class="hljs-selector-class">.env</span> \ -v{" "}
+            <span class="hljs-string">
+              "$(pwd)/settings.json:/app/settings.json"
+            </span>{" "}
+            \ -v{" "}
+            <span class="hljs-string">
+              "$(pwd)/reports.log:/app/reports.log"
+            </span>{" "}
+            \ ghcr.io/szabee13/reverse-rickroll:latest
+          </code>
+        </pre>
+        <h2 id="setting-up">Setting up</h2>
+        <ol>
+          <li>
+            Use <code>/settings</code> command in a guild
+          </li>
+        </ol>
+      </div>
+    </div>
+  );
 };
 
 export default Documentation;

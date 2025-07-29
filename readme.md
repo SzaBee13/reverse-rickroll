@@ -11,24 +11,21 @@
 - 👀 Files uploaded having a sus name.
 - 🔁 And then... flips it back on the sender 😈
 
-## 🛠 Setup
-1. Clone the repo
-2. Add you token to `.env` file `DISCORD_TOKEN=<token>`
-3. Create a settings.json file
-```json
-{}
+## 🛠 Setup Using Docker
+NOTE! YOU CAN ONLY USE THE SOFTWARE FOR YOURSELF IF YOU WANT TO CONTRIBUTE TO THE REPO FOR TEST ELSE PLEASE USE THE OFFICIAL REPO
+```sh
+docker pull ghcr.io/szabee13/reverse-rickroll:latest
+touch reports.log
+nano .env
+nano settings.json "{}"
+docker run -d \
+  --name reverse-rickroll-bot \
+  --env-file .env \
+  -v "$(pwd)/settings.json:/app/settings.json" \
+  -v "$(pwd)/reports.log:/app/reports.log" \
+  ghcr.io/szabee13/reverse-rickroll:latest
+
 ```
-NOTE! YOU CAN ONLY USE ITS (for yourself) IF YOU WANT TO CONTRIBUTE TO THE REPO
-YOU CAN STILL INVITE THE ORIGINAL BOT TO THE SERVER
-
-### Docker
-1. Docker build: `docker build -t <name> .`
-2. Remove and stop previous `docker stop <name> docker rm <name>`
-3. Docker run: `docker run --name <name> -d <name>`
-
-### Python
-1. Pip install: `pip install -r requirements.txt`
-2. Run the bot: `python main.py`
 
 ## Setting up
 1. Use `/settings` command in a guild
