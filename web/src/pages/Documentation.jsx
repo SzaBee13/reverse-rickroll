@@ -5,14 +5,14 @@ const Documentation = () => {
         <div className="documentation container">
             <h1>Documentation</h1>
             <div>
-                <h1 id="-reverse-rickroll-bot">🤖 Reverse RickRoll Bot</h1>
+                <h1 id="reverse-rickroll-bot">🤖 Reverse RickRoll Bot</h1>
                 <blockquote>
                     <p>
                         A Discord bot that hunts down RickRolls, sussy emojis,
                         and sneaky stickers… then flips the script. 🔁💥
                     </p>
                 </blockquote>
-                <h2 id="-what-it-detects">🔍 What it Detects</h2>
+                <h2 id="what-it-detects">🔍 What it Detects</h2>
                 <ul>
                     <li>🎥 YouTube RickRoll links</li>
                     <li>🧾 Stickers in messages</li>
@@ -24,14 +24,18 @@ const Documentation = () => {
                     <li>👀 Files uploaded having a sus name.</li>
                     <li>🔁 And then... flips it back on the sender 😈</li>
                 </ul>
-                <h2 id="-setup">🛠 Setup</h2>
+                <h2 id="setup">🛠 Setup</h2>
                 <ol>
                     <li>Clone the repo</li>
                     <li>
                         Add you token to <code>.env</code> file{" "}
                         <code>DISCORD_TOKEN=&lt;token&gt;</code>
                     </li>
+                    <li>Create a settings.json file
+                        <code>settings.json</code> in the root directory
+                    </li>
                 </ol>
+                <h3>NOTE! YOU CAN ONLY USE ITS IF YOU WANT TO CONTRIBUTE TO THE REPO</h3>
                 <h3 id="docker">Docker</h3>
                 <ol>
                     <li>
@@ -60,6 +64,10 @@ const Documentation = () => {
                     <li>
                         Run the bot: <code>python main.py</code>
                     </li>
+                </ol>
+                <h2 id="settings">Setting Up</h2>
+                <ol>
+                    <li>Use `/settings` command in a guild</li>
                 </ol>
             </div>
         </div>

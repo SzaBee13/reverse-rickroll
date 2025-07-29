@@ -18,6 +18,7 @@
 ```json
 {}
 ```
+NOTE! YOU CAN ONLY USE ITS IF YOU WANT TO CONTRIBUTE TO THE REPO
 
 ### Docker
 1. Docker build: `docker build -t <name> .`

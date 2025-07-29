@@ -38,6 +38,9 @@ function TermsOfService() {
             </a>
             .
           </li>
+          <li>
+            YOU CAN ONLY USE THE BOT IF YOU WANT TO CONTRIBUTE TO THE REPO
+          </li>
         </ul>
       </div>
     </div>
