@@ -53,7 +53,8 @@ const Navbar = ({ toggleTheme }) => {
             <div className="navbar-links" id="navbar-links" ref={linksRef}>
                 <Link to="/" className="navbar-link" onClick={handleNavLinkClick}>Home</Link>
                 <Link to="/documentation" className="navbar-link" onClick={handleNavLinkClick}>Documentation</Link>
-                <a href="https://discord.com/oauth2/authorize?client_id=1384237022826336316" target="_blank" rel="noopener noreferrer" onClick={handleNavLinkClick}>Add To Server</a>
+                <Link to="/invite" className="navbar-link" onClick={handleNavLinkClick}>Invite</Link>
+                <Link to="/legal" className="navbar-link" onClick={handleNavLinkClick}>Legal</Link>
                 <a
                     href="https://szabee13.pages.dev"
                     target="_blank"
