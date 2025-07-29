@@ -9,6 +9,7 @@ from discord import app_commands
 
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
+OWNER_ID = int(os.getenv("OWNER_ID"))
 
 DECOY_LINKS = [
     "https://youtu.be/IwzUs1IMdyQ",
@@ -236,5 +237,79 @@ async def settings_command(interaction: discord.Interaction,
     f"✅ Updated settings:\n```json\n{updated}```",
     ephemeral=True
   )
+
+@tree.command(name="report", description="Report an issue or send feedback to the bot owner.")
+@app_commands.describe(message="Describe your issue or feedback")
+async def report_command(interaction: discord.Interaction, message: str):
+    if not interaction.guild:
+        await interaction.response.send_message(
+            "❌ You can only send reports from within a server.",
+            ephemeral=True
+        )
+        return
+
+    # Log to file
+    log_entry = {
+        "user": str(interaction.user),
+        "user_id": interaction.user.id,
+        "guild": str(interaction.guild),
+        "guild_id": interaction.guild.id,
+        "message": message,
+    }
+
+    with open("reports.log", "a", encoding="utf-8") as f:
+        f.write(json.dumps(log_entry) + "\n")
+
+    await interaction.response.send_message("✅ Your report has been logged. Thanks!", ephemeral=True)
+
+    # Optional: also send to you via DM
+    owner = await client.fetch_user(OWNER_ID)
+    if owner:
+        try:
+            await owner.send(f"📨 New report from {interaction.user} in {interaction.guild.name}:\n```\n{message}\n```")
+        except:
+            print("❌ Could not DM the owner.")
+
+@tree.command(name="ping", description="Check the bot's latency.")
+async def ping_command(interaction: discord.Interaction):
+    latency = round(client.latency * 1000)
+    await interaction.response.send_message(f"🏓 Pong! Latency: {latency}ms", ephemeral=True)
+
+@tree.command(name="reset", description="Reset the bot's settings for this server.")
+async def reset_command(interaction: discord.Interaction):
+    if not interaction.guild:
+        await interaction.response.send_message(
+            "❌ This command can only be used in a server!",
+            ephemeral=True
+        )
+        return
+
+    if not interaction.user.guild_permissions.administrator:
+        await interaction.response.send_message(
+            "🚫 You must be an admin to use this command!",
+            ephemeral=True
+        )
+        return
+
+    gid = interaction.guild.id
+    guild_settings[gid] = default_triggers.copy()
+
+    # Write the updated settings back to the file
+    with open("settings.json", "w") as f:
+        json.dump(guild_settings, f, indent=2)
+
+    await interaction.response.send_message(
+        "✅ Settings have been reset to default.",
+        ephemeral=True
+    )
+
+# If the bot gets kicked or removed from a server, remove its settings
+@client.event
+async def on_guild_remove(guild):
+    if guild.id in guild_settings:
+        del guild_settings[guild.id]
+        # Write the updated settings back to the file
+        with open("settings.json", "w") as f:
+            json.dump(guild_settings, f, indent=2)
 
 client.run(TOKEN)

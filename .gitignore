@@ -3,3 +3,4 @@ run-docker.md
 /web/node_modules
 /web/package-lock.json
 settings.json
+reports.log
