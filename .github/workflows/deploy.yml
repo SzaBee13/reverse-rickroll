@@ -1,0 +1,36 @@
+name: Deploy Reverse RickRoll Bot 🌀
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    name: Build & Push to GHCR
+    runs-on: ubuntu-latest
+
+    permissions:
+      packages: write
+      contents: read
+
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v3
+
+      - name: 🔐 Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🏗️ Build Docker Image
+        run: |
+          IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/reverse-rickroll:latest
+          docker build -t $IMAGE_NAME .
+
+      - name: 🚀 Push Image to GHCR
+        run: |
+          IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/reverse-rickroll:latest
+          docker push $IMAGE_NAME
