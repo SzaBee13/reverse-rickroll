@@ -14,6 +14,10 @@
 ## 🛠 Setup
 1. Clone the repo
 2. Add you token to `.env` file `DISCORD_TOKEN=<token>`
+3. Create a settings.json file
+```json
+{}
+```
 
 ### Docker
 1. Docker build: `docker build -t <name> .`
@@ -23,3 +27,6 @@
 ### Python
 1. Pip install: `pip install -r requirements.txt`
 2. Run the bot: `python main.py`
+
+## Setting up
+1. Use `/settings` command in a guild

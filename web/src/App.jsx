@@ -7,6 +7,11 @@ import "./index.css";
 import "./themes/light.css";
 import "./themes/dark.css";
 
+function Invite() {
+    window.location.href = "https://discord.com/oauth2/authorize?client_id=1384237022826336316";
+    return (<div></div>); // This component does not render anything
+}
+
 function App() {
     // Load theme from localStorage or default to light
     const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "light");
@@ -28,6 +33,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/documentation" element={<Documentation />} />
+                    <Route path="/invite" element={<Invite />} />
                 </Routes>
             </Router>
         </div>

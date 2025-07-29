@@ -3,7 +3,9 @@ import re
 import requests
 import random
 import os
+import json
 from dotenv import load_dotenv
+from discord import app_commands
 
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
@@ -34,7 +36,7 @@ SUS_TEXT_PHRASES = [
     "give you up",
     "nggyu",
     "rick roll",
-    "never gonna"
+    "never gonna",
     
     "we're no strangers to love",
     "You know the rules and so do I",
@@ -73,6 +75,16 @@ intents = discord.Intents.default()
 intents.message_content = True
 intents.messages = True
 client = discord.Client(intents=intents)
+tree = app_commands.CommandTree(client)
+
+guild_settings = {}
+default_triggers = {
+  "emoji": True,
+  "text": True,
+  "sticker": True,
+  "file": True,
+  "video": True
+}
 
 def has_sus_file_upload(message):
     for attachment in message.attachments:
@@ -112,6 +124,7 @@ def has_sus_rick_emoji(content):
 @client.event
 async def on_ready():
     print(f"✅ Bot is online as {client.user}!")
+    await tree.sync()
 
     # 👀 Set presence
     activity = discord.Activity(
@@ -119,6 +132,11 @@ async def on_ready():
         name="Rick Astley - Never Gonna Give You Up"
     )
     await client.change_presence(activity=activity)
+    
+    # Import guild settings from file
+    global guild_settings
+    with open("settings.json", "r") as f:
+        guild_settings = json.load(f)
 
 @client.event
 async def on_message(message):
@@ -126,28 +144,31 @@ async def on_message(message):
         return
 
     content = message.content or ""
+    gid = message.guild.id if message.guild else None
     video_id = extract_video_id(content)
     is_roll = video_id and is_rickroll(video_id)
     has_sticker = bool(message.stickers)
     has_emojis = has_sus_rick_emoji(content)
     has_sus_text_content = has_sus_text(content)
     has_sus_file, sus_filename = has_sus_file_upload(message)
+    settings = guild_settings.get(gid, default_triggers)
 
     if is_roll or has_sticker or has_emojis or has_sus_text_content or has_sus_file:
         try:
             await message.delete()
 
-            if is_roll:
+            if is_roll and settings["video"]:
                 roast = get_random_response(message.author.mention)
-            elif has_sticker:
+            elif has_sticker and settings["sticker"]:
                 roast = f"🎟️ {message.author.mention} tried to sneak a sticker past me... I SEE YOU 👁️\n<{random.choice(DECOY_LINKS)}>"
-            elif has_emojis:
+            elif has_emojis and settings["emoji"]:
                 roast = f"😏 Emojis won’t save you, {message.author.mention}… reverse time: <{random.choice(DECOY_LINKS)}>"
-            elif has_sus_text_content:
+            elif has_sus_text_content and settings["text"]:
                 roast = f"📜 Quoting ancient meme scrolls won’t save you, {message.author.mention}!\n<{random.choice(DECOY_LINKS)}>"
-            elif has_sus_file:
+            elif has_sus_file and settings["file"]:
                 roast = f"📁 A wild *sussy file* appeared: `{sus_filename}`\n{message.author.mention}, reverse time!\n<{random.choice(DECOY_LINKS)}>"
-
+            else:
+                return  # No valid trigger found
             msg = await message.channel.send(roast)
             await msg.add_reaction("💀")
             await msg.add_reaction("🍆")
@@ -165,5 +186,55 @@ async def handle_rickroll(message):
         print("❌ Missing permissions to delete messages.")
     except Exception as e:
         print(f"⚠️ Error: {e}")
+
+@tree.command(name="settings", description="Update detection settings for your server!")
+@app_commands.describe(
+    emoji="Detect emoji-based RickRolls",
+    text="Detect sus text lyrics",
+    sticker="Detect stickers",
+    file="Detect sus file uploads",
+    video="Detect YouTube links"
+)
+async def settings_command(interaction: discord.Interaction,
+    emoji: bool = None,
+    text: bool = None,
+    sticker: bool = None,
+    file: bool = None,
+    video: bool = None):
+  if not interaction.guild:
+    await interaction.response.send_message(
+      "❌ This command can only be used in a server!",
+      ephemeral=True
+    )
+    return
+
+  if not interaction.user.guild_permissions.administrator:
+    await interaction.response.send_message(
+      "🚫 You must be an admin to use this command!",
+      ephemeral=True
+    )
+    return
+
+  gid = interaction.guild.id
+  
+  if gid not in guild_settings:
+    guild_settings[gid] = default_triggers.copy()
+
+  updated = guild_settings[gid]
+
+  if emoji is not None: updated["emoji"] = emoji
+  if text is not None: updated["text"] = text
+  if sticker is not None: updated["sticker"] = sticker
+  if file is not None: updated["file"] = file
+  if video is not None: updated["video"] = video
+
+  # write in ./settings.json
+  with open("settings.json", "w") as f:
+    json.dump(guild_settings, f, indent=2)
+
+  await interaction.response.send_message(
+    f"✅ Updated settings:\n```json\n{updated}```",
+    ephemeral=True
+  )
 
 client.run(TOKEN)
