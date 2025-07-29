@@ -39,7 +39,8 @@ function TermsOfService() {
             .
           </li>
           <li>
-            YOU CAN ONLY USE THE BOT IF YOU WANT TO CONTRIBUTE TO THE REPO
+            YOU CAN ONLY USE THE BOT (for yourself) IF YOU WANT TO CONTRIBUTE TO THE REPO
+            YOU CAN STILL INVITE THE ORIGINAL BOT TO THE SERVER
           </li>
         </ul>
       </div>
