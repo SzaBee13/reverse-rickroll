@@ -2,8 +2,8 @@ name: Create Release Reverse RickRoll Bot 🌀
 
 on:
   push:
-    tags:
-      - 'v*.*.*'
+    branches:
+      - main
 
 jobs:
   release:
