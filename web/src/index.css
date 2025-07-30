@@ -1,37 +1,37 @@
 :root {
-    --link-color: #1e90ff;
+  --link-color: #1e90ff;
 }
 
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    transition: background-color 0.3s, color 0.3s;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 a {
-    color: var(--link-color);
-    text-decoration: none;
+  color: var(--link-color);
+  text-decoration: none;
 }
 
 a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    padding: 1rem;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .container {
-    padding: 2rem;
+  padding: 2rem;
 }
 
 .footer {
-    text-align: center;
-    padding: 1rem;
-    position: relative;
-    bottom: 0;
-    width: 100%;
+  text-align: center;
+  padding: 1rem;
+  position: relative;
+  bottom: 0;
+  width: 100%;
 }
