@@ -24,7 +24,7 @@ const Home = () => {
             View on GitHub
           </a>
           <a
-            href="https://dockerhub.com/szabee13/reverse-rickroll"
+            href="https://hub.docker.com/r/szabee13/reverse-rickroll"
             className="cta-btn"
             target="_blank"
             rel="noopener noreferrer"
