@@ -9,19 +9,19 @@ function Legal() {
         <p>
           This is a legal document for the Reverse Rickroll Discord bot.
         </p>
-        <a href="https://discord.com/terms" target="_blank" className="text-blue-500 underline">
+        <a href="https://discord.com/terms"target="_blank">
           Discord Terms of Service
         </a>
-        <br />
-        <a href="https://discord.com/guidelines" target="_blank" className="text-blue-500 underline">
+        <a href="https://discord.com/guidelines"target="_blank">
           Discord Community Guidelines
         </a>
-        <br />
-        <Link to="/privacy-policy" className="text-blue-500 underline">
+        <Link to="/license">
+          License
+        </Link>
+        <Link to="/privacy-policy">
           Privacy Policy
         </Link>
-        <br />
-        <Link to="/terms-of-service" className="text-blue-500 underline">
+        <Link to="/terms-of-service">
           Terms of Service
         </Link>
         <p>

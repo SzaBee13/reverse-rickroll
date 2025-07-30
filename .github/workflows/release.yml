@@ -27,10 +27,11 @@ jobs:
       - name: Get commit message
         id: get_commit_msg
         run: |
-          msg=$(git log -1 --pretty=%B)
-          echo "commit_msg<<EOF" >> $GITHUB_OUTPUT
-          echo "$msg" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          {
+            echo 'commit_msg<<EOF'
+            git log -1 --pretty=%B
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
 
       - name: Set up Git
         run: |
@@ -50,8 +51,14 @@ jobs:
           tag_name: v${{ steps.get_version.outputs.version }}
           release_name: v${{ steps.get_version.outputs.version }}
           body: |
+            ## Release Notes
             ${{ steps.get_commit_msg.outputs.commit_msg }}
-
-            docker pull ghcr.io/szabee13/reverse-rickroll:${{ steps.get_version.outputs.version }}
+            
+            ## Docker Image
+            You can pull the Docker image using:
+            `docker pull ghcr.io/szabee13/reverse-rickroll:${{ steps.get_version.outputs.version }}`
+            or
+            `docker pull ghcr.io/szabee13/reverse-rickroll:latest`
+            PLEASE: Read the [README](https://github.com/szabee13/reverse-rickroll/blob/main/README.md) and the [LICENSE](https://github.com/szabee13/reverse-rickroll/blob/main/LICENSE.md) before you use it.
           draft: false
           prerelease: false

@@ -5,6 +5,7 @@ import Documentation from "./pages/Documentation";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import Legal from "./pages/Legal";
+import License from "./pages/License";
 import { useState, useEffect } from "react";
 import "./index.css";
 import "./themes/light.css";
@@ -40,6 +41,7 @@ function App() {
                     <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                     <Route path="/terms-of-service" element={<TermsOfService />} />
                     <Route path="/legal" element={<Legal />} />
+                    <Route path="/license" element={<License />} />
                     <Route path="*" element={<Home />} />
                 </Routes>
             </Router>

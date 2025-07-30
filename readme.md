@@ -12,7 +12,7 @@
 - 🔁 And then... flips it back on the sender 😈
 
 ## 🛠 Setup Using Docker
-NOTE! YOU CAN ONLY USE THE SOFTWARE FOR YOURSELF IF YOU WANT TO CONTRIBUTE TO THE REPO FOR TEST ELSE PLEASE USE THE OFFICIAL REPO
+NOTE! Please read the [LICENSE](./LICENSE.md) before you use it.
 ```sh
 docker pull ghcr.io/szabee13/reverse-rickroll:latest
 touch reports.log
