@@ -14,7 +14,7 @@
 ## 🛠 Setup Using Docker
 NOTE! Please read the [LICENSE](./LICENSE.md) before you use it.
 ```sh
-docker pull ghcr.io/szabee13/reverse-rickroll:latest
+docker pull szabee13/reverse-rickroll:latest
 touch reports.log
 nano .env
 nano settings.json "{}"
@@ -23,7 +23,7 @@ docker run -d \
   --env-file .env \
   -v "$(pwd)/settings.json:/app/settings.json" \
   -v "$(pwd)/reports.log:/app/reports.log" \
-  ghcr.io/szabee13/reverse-rickroll:latest
+  szabee13/reverse-rickroll:latest
 
 ```
 

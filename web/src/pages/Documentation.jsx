@@ -28,7 +28,7 @@ const Documentation = () => {
         <p>NOTE! YOU CAN ONLY USE THE SOFTWARE FOR YOURSELF IF YOU WANT TO CONTRIBUTE TO THE REPO FOR TEST ELSE PLEASE USE THE OFFICIAL REPO</p>
         <pre>
           <code class="lang-sh">
-            docker pull ghcr.io/szabee13/reverse-rickroll:latest touch reports
+            docker pull szabee13/reverse-rickroll:latest touch reports
             <span class="hljs-selector-class">.log</span>
             nano <span class="hljs-selector-class">.env</span>
             nano settings<span class="hljs-selector-class">.json</span>{" "}
@@ -42,7 +42,7 @@ const Documentation = () => {
             <span class="hljs-string">
               "$(pwd)/reports.log:/app/reports.log"
             </span>{" "}
-            \ ghcr.io/szabee13/reverse-rickroll:latest
+            \ szabee13/reverse-rickroll:latest
           </code>
         </pre>
         <h2 id="setting-up">Setting up</h2>

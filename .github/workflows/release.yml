@@ -56,9 +56,9 @@ jobs:
             
             ## Docker Image
             You can pull the Docker image using:
-            `docker pull ghcr.io/szabee13/reverse-rickroll:${{ steps.get_version.outputs.version }}`
+            `docker pull szabee13/reverse-rickroll:${{ steps.get_version.outputs.version }}`
             or
-            `docker pull ghcr.io/szabee13/reverse-rickroll:latest`
+            `docker pull szabee13/reverse-rickroll:latest`
             PLEASE: Read the [README](https://github.com/szabee13/reverse-rickroll/blob/main/README.md) and the [LICENSE](https://github.com/szabee13/reverse-rickroll/blob/main/LICENSE.md) before you use it.
           draft: false
           prerelease: false
