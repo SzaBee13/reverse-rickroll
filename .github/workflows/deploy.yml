@@ -24,16 +24,23 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Grab Version
+        id: get_version
+        run: |
+          VERSION=$(cat VERSION.txt)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: 🏗️ Build Docker Image
         run: |
           REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
-          IMAGE_NAME="ghcr.io/${REPO_LOWER}:latest"
+          IMAGE_NAME="ghcr.io/${REPO_LOWER}"
           echo "IMAGE_NAME=$IMAGE_NAME"
-          docker build -t "$IMAGE_NAME" .
+          docker build -t "$IMAGE_NAME:$VERSION" -t "$IMAGE_NAME:latest" .
 
       - name: 🚀 Push to GHCR
         run: |
           REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
-          IMAGE_NAME="ghcr.io/${REPO_LOWER}:latest"
-          docker push "$IMAGE_NAME"
+          IMAGE_NAME="ghcr.io/${REPO_LOWER}"
+          docker push "$IMAGE_NAME":$VERSION
+          docker push "$IMAGE_NAME":latest

@@ -1,0 +1,43 @@
+name: Create Release Reverse RickRoll Bot 🌀
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Read version from VERSION.txt
+        id: get_version
+        run: |
+          version=$(cat VERSION.txt)
+          echo "version=$version" >> $GITHUB_OUTPUT
+
+      - name: Get commit message
+        id: get_commit_msg
+        run: |
+          msg=$(git log -1 --pretty=%B)
+          # Escape backticks or special chars if you want, but let's keep it simple
+          echo "commit_msg<<EOF" >> $GITHUB_OUTPUT
+          echo "$msg" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: v${{ steps.get_version.outputs.version }}
+          body: |
+            ${{ steps.get_commit_msg.outputs.commit_msg }}
+
+            docker pull ghcr.io/szabee13/reverse-rickroll:${{ steps.get_version.outputs.version }}
+          draft: false
+          prerelease: false

@@ -11,66 +11,26 @@ load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
 OWNER_ID = int(os.getenv("OWNER_ID"))
 
-DECOY_LINKS = [
-    "https://youtu.be/IwzUs1IMdyQ",
-    "https://youtu.be/KxGRhd_iWuE",
-    "https://youtu.be/tVj0ZTS4WF4",
-    "https://youtu.be/dQw4w9WgXcQ?t=43",
-    "https://youtu.be/oHg5SJYRHA0",
-    "https://youtu.be/j5a0jTc9S10",
-]
+STATIC_JSON_PATH = "static.json"
+if not os.path.exists(STATIC_JSON_PATH):
+    with open(STATIC_JSON_PATH, "w") as f:
+        json.dump({}, f)
+        f.close()
+    print(f"Created {STATIC_JSON_PATH} with empty content. Please fill it with the required data.")
 
-ROAST_MESSAGES = [
-    "🎯 {mention}, *caught red-handed*! Enjoy this instead: <{bait}>",
-    "😈 Oops {mention}, your meme magic just got reversed. Here's a spicy one: <{bait}>",
-    "🚨 RICKROLL DETECTED! {mention}, time to taste your own medicine: <{bait}>",
-    "🎶 No no no... Not today, {mention}. Here's your punishment gift: <{bait}>",
-    "🌀 Reverse Roll Engaged! {mention}, now feel the wrath: <{bait}>",
-    "💀 You thought you were slick, {mention}... But you just got bamboozled: <{bait}>",
-]
+STATIC_JSON = json.load(open(STATIC_JSON_PATH, "r"))
 
-SUS_EMOJIS = [
-    "rickroll", "rick", "roll", "rick_roll", "rick-roll"
-]
+DECOY_LINKS = STATIC_JSON.get("decoy_links")
 
-SUS_TEXT_PHRASES = [
-    "give you up",
-    "nggyu",
-    "rick roll",
-    "never gonna",
-    
-    "we're no strangers to love",
-    "You know the rules and so do I",
-    "A full commitment's what I'm thinkin' of",
-    "You wouldn't get this from any other guy",
-    
-    "I just wanna tell you how I'm feeling",
-    "Gotta make you understand",
-    
-    "never gonna give you up",
-    "never gonna let you down",
-    "never gonna run around and desert you",
-    "never gonna make you cry",
-    "never gonna say goodbye",
-    "never gonna tell a lie and hurt you",
-    
-    "We've known each other for so long",
-    "Your heart's been aching, but you're too shy to say it",
-    "Inside, we both know what's been going on",
-    "We know the game and we're gonna play it",
-    
-    "And if you ask me how I'm feeling",
-    "Don't tell me you're too blind to see"
-]
+ROAST_MESSAGES = STATIC_JSON.get("roast_messages")
 
-SUS_FILE_KEYWORDS = [
-    "rickroll", "rick", "roll", "rick_roll", "rick-roll"
-]
+SUS_EMOJIS = STATIC_JSON.get("sus_emojis")
 
-SUS_FILE_EXTENSIONS = [
-    ".mp4", ".mov", ".avi", ".webm", ".mkv", ".gif",
-    "png", "jpeg", "jpg", "svg", "webp"
-]
+SUS_TEXT_PHRASES = STATIC_JSON.get("sus_text_phrases")
+
+SUS_FILE_KEYWORDS = STATIC_JSON.get("sus_file_keywords")
+
+SUS_FILE_EXTENSIONS = STATIC_JSON.get("sus_file_extensions")
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -79,13 +39,7 @@ client = discord.Client(intents=intents)
 tree = app_commands.CommandTree(client)
 
 guild_settings = {}
-default_triggers = {
-  "emoji": True,
-  "text": True,
-  "sticker": True,
-  "file": True,
-  "video": True
-}
+default_triggers = STATIC_JSON.get("default_triggers")
 
 def has_sus_file_upload(message):
     for attachment in message.attachments:
@@ -95,7 +49,7 @@ def has_sus_file_upload(message):
     return False, None
 
 def has_sus_text(content):
-    content_lower = content.lower()
+    content_lower = content.lower().replace("'", "").replace("’", "").replace("_", " ").replace("-", " ").replace(":", " ").replace(";", " ").replace(",", " ").replace(".", " ").replace("  ", " ")
     return any(phrase in content_lower for phrase in SUS_TEXT_PHRASES)
 
 def get_random_response(mention):
@@ -138,6 +92,8 @@ async def on_ready():
     global guild_settings
     with open("settings.json", "r") as f:
         guild_settings = json.load(f)
+        print("🔧 Loaded guild settings from settings.json")
+        f.close()
 
 @client.event
 async def on_message(message):
@@ -172,7 +128,6 @@ async def on_message(message):
                 return  # No valid trigger found
             msg = await message.channel.send(roast)
             await msg.add_reaction("💀")
-            await msg.add_reaction("🍆")
             await msg.add_reaction("👀")
 
         except Exception as e:
@@ -222,6 +177,13 @@ async def settings_command(interaction: discord.Interaction,
     guild_settings[gid] = default_triggers.copy()
 
   updated = guild_settings[gid]
+
+  if emoji == None and text == None and sticker == None and file == None and video == None:
+    await interaction.response.send_message(
+      "No changes made. The current settings are:\n```json\n{updated}```",
+      ephemeral=True
+    )
+    return
 
   if emoji is not None: updated["emoji"] = emoji
   if text is not None: updated["text"] = text
