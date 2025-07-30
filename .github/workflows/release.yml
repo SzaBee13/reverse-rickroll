@@ -7,7 +7,12 @@ on:
 
 jobs:
   release:
+    name: Create Release
     runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+      packages: read
 
     steps:
       - name: Checkout repo
@@ -23,17 +28,26 @@ jobs:
         id: get_commit_msg
         run: |
           msg=$(git log -1 --pretty=%B)
-          # Escape backticks or special chars if you want, but let's keep it simple
           echo "commit_msg<<EOF" >> $GITHUB_OUTPUT
           echo "$msg" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Set up Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Create and push tag
+        run: |
+          git tag v${{ steps.get_version.outputs.version }}
+          git push origin v${{ steps.get_version.outputs.version }}
 
       - name: Create GitHub Release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref_name }}
+          tag_name: v${{ steps.get_version.outputs.version }}
           release_name: v${{ steps.get_version.outputs.version }}
           body: |
             ${{ steps.get_commit_msg.outputs.commit_msg }}
