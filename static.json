@@ -1,5 +1,5 @@
 {
-  "DECOY_LINKS": [
+  "decoy_links": [
     "https://youtu.be/IwzUs1IMdyQ",
     "https://youtu.be/KxGRhd_iWuE",
     "https://youtu.be/tVj0ZTS4WF4",
@@ -7,7 +7,7 @@
     "https://youtu.be/oHg5SJYRHA0",
     "https://youtu.be/j5a0jTc9S10"
   ],
-  "ROAST_MESSAGES": [
+  "roast_messages": [
     "🎯 {mention}, *caught red-handed*! Enjoy this instead: <{bait}>",
     "😈 Oops {mention}, your meme magic just got reversed. Here's a spicy one: <{bait}>",
     "🚨 RICKROLL DETECTED! {mention}, time to taste your own medicine: <{bait}>",
@@ -15,10 +15,10 @@
     "🌀 Reverse Roll Engaged! {mention}, now feel the wrath: <{bait}>",
     "💀 You thought you were slick, {mention}... But you just got bamboozled: <{bait}>"
   ],
-  "SUS_EMOJIS": [
+  "sus_emojis": [
     "rickroll", "rick", "roll", "rick_roll", "rick-roll"
   ],
-  "SUS_TEXT_PHRASES": [
+  "sus_text_phrases": [
     "give you up",
     "nggyu",
     "rick roll",
@@ -48,10 +48,10 @@
     "And if you ask me how I'm feeling", "And if you ask me how Im feeling",
     "Don't tell me you're too blind to see", "Dont tell me youre too blind to see"
   ],
-  "SUS_FILE_KEYWORDS": [
+  "sus_file_keywords": [
     "rickroll", "rick", "roll", "rick_roll", "rick-roll"
   ],
-  "SUS_FILE_EXTENSIONS": [
+  "sus_file_extensions": [
     ".mp4", ".mov", ".avi", ".webm", ".mkv", ".gif",
     "png", "jpeg", "jpg", "svg", "webp",
     "waw", "mp3", "wav", "flac", "ogg", "m4a",
@@ -60,10 +60,10 @@
     "doc", "docx", "pdf", "ppt", "pptx", ".xls", ".xlsx"
   ],
   "default_triggers": {
-    "emoji": "True",
-    "text": "True",
-    "sticker": "True",
-    "file": "True",
-    "video": "True"
+    "emoji": true,
+    "text": true,
+    "sticker": true,
+    "file": true,
+    "video": true
   }
 }

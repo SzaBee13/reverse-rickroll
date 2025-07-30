@@ -180,10 +180,10 @@ async def settings_command(interaction: discord.Interaction,
 
   if emoji == None and text == None and sticker == None and file == None and video == None:
     await interaction.response.send_message(
-      "No changes made. The current settings are:\n```json\n{updated}```",
+      f"No changes made. The current settings are:\n```json\n{updated}```",
       ephemeral=True
     )
-    return
+    returnhttps://www.youtube.com/watch?v=dQw4w9WgXcQ
 
   if emoji is not None: updated["emoji"] = emoji
   if text is not None: updated["text"] = text
