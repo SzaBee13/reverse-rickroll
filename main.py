@@ -183,7 +183,7 @@ async def settings_command(interaction: discord.Interaction,
       f"No changes made. The current settings are:\n```json\n{updated}```",
       ephemeral=True
     )
-    returnhttps://www.youtube.com/watch?v=dQw4w9WgXcQ
+    return
 
   if emoji is not None: updated["emoji"] = emoji
   if text is not None: updated["text"] = text
