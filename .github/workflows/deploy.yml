@@ -34,7 +34,7 @@ jobs:
         run: |
           IMAGE_NAME="${{ secrets.DOCKERHUB_USERNAME }}/reverse-rickroll"
           echo "IMAGE_NAME=$IMAGE_NAME"
-          docker build -t "$IMAGE_NAME:$VERSION" -t "$IMAGE_NAME:latest" .
+          docker build -t "$IMAGE_NAME:$VERSION" -t "$IMAGE_NAME:latest" -t "ghcr.io/$IMAGE_NAME:$VERSION" -t "ghcr.io/$IMAGE_NAME:latest" .
 
       - name: 🚀 Push to Docker Hub
         run: |
