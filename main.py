@@ -49,7 +49,7 @@ def has_sus_file_upload(message):
     return False, None
 
 def has_sus_text(content):
-    content_lower = content.lower().replace("'", "").replace("’", "").replace("_", " ").replace("-", " ").replace(":", " ").replace(";", " ").replace(",", " ").replace(".", " ").replace("  ", " ")
+    content_lower = content.lower().replace("'", "").replace("’", "").replace("_", " ").replace("-", " ").replace(":", " ").replace(";", " ").replace(",", " ").replace(".", " ").replace("+", " ").replace("(", "").replace(")", "").replace("[", "").replace("]", "").replace("  ", " ")
     return any(phrase in content_lower for phrase in SUS_TEXT_PHRASES)
 
 def get_random_response(mention):

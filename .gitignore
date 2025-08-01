@@ -6,3 +6,4 @@ settings.json
 reports.log
 commit.sh
 commit.ps1
+/test/
