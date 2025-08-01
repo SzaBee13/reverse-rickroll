@@ -41,3 +41,14 @@ jobs:
           IMAGE_NAME="${{ secrets.DOCKERHUB_USERNAME }}/reverse-rickroll"
           docker push "$IMAGE_NAME:$VERSION"
           docker push "$IMAGE_NAME:latest"
+      - name: 🚀 Push to GHCR
+        run: |
+          REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+          IMAGE_NAME="ghcr.io/${REPO_LOWER}"
+          docker push "$IMAGE_NAME":$VERSION
+          docker push "$IMAGE_NAME":latest
+      - name: 🧹 Cleanup Docker Images
+        run: |
+          docker rmi "$IMAGE_NAME:$VERSION" "$IMAGE_NAME:latest"
+          docker rmi "ghcr.io/${REPO_LOWER}:$VERSION" "ghcr.io/${REPO_LOWER}:latest"
+          docker system prune -f
