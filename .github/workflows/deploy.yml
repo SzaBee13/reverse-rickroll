@@ -56,6 +56,9 @@ jobs:
           docker push "$IMAGE_NAME":latest
       - name: 🧹 Cleanup Docker Images
         run: |
+          VERSION="${{ env.VERSION }}"
+          IMAGE_NAME="${{ secrets.DOCKERHUB_USERNAME }}/reverse-rickroll"
+          REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
           docker rmi "$IMAGE_NAME:$VERSION" "$IMAGE_NAME:latest"
           docker rmi "ghcr.io/${REPO_LOWER}:$VERSION" "ghcr.io/${REPO_LOWER}:latest"
           docker system prune -f
