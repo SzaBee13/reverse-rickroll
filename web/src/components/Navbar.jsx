@@ -68,6 +68,9 @@ const Navbar = ({ toggleTheme }) => {
         <Link to="/invite" className="navbar-link" onClick={handleNavLinkClick} target="_blank" rel="noopener noreferrer">
           Invite
         </Link>
+        <Link to="/discord" className="navbar-link" onClick={handleNavLinkClick} target="_blank" rel="noopener noreferrer">
+          Discord Server
+        </Link>
         <Link to="/legal" className="navbar-link" onClick={handleNavLinkClick}>
           Legal
         </Link>

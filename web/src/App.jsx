@@ -27,6 +27,11 @@ function GitHub() {
   return <div></div>; // This component does not render anything
 }
 
+function DiscordServer() {
+  window.location.href = "https://discord.gg/McyYZEpf57";
+  return <div></div>; // This component does not render anything
+}
+
 function App() {
   // Load theme from localStorage or default to light
   const [theme, setTheme] = useState(
@@ -53,6 +58,7 @@ function App() {
           <Route path="/invite" element={<Invite />} />
           <Route path="/docker" element={<Docker />} />
           <Route path="/github" element={<GitHub />} />
+          <Route path="/discord" element={<DiscordServer />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/license" element={<License />} />
