@@ -10,15 +10,16 @@ from discord import app_commands
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
 OWNER_ID = int(os.getenv("OWNER_ID"))
+REPORT_CHANNEL_ID = int(os.getenv("REPORT_CHANNEL_ID", 1401097099889872966))  # Default to a specific channel if not set
 
 STATIC_JSON_PATH = "static.json"
 if not os.path.exists(STATIC_JSON_PATH):
-    with open(STATIC_JSON_PATH, "w") as f:
+    with open(STATIC_JSON_PATH, "w", encoding="utf-8") as f:
         json.dump({}, f)
         f.close()
     print(f"Created {STATIC_JSON_PATH} with empty content. Please fill it with the required data.")
 
-STATIC_JSON = json.load(open(STATIC_JSON_PATH, "r"))
+STATIC_JSON = json.load(open(STATIC_JSON_PATH, "r", encoding="utf-8"))
 
 DECOY_LINKS = STATIC_JSON.get("decoy_links")
 
@@ -31,6 +32,8 @@ SUS_TEXT_PHRASES = STATIC_JSON.get("sus_text_phrases")
 SUS_FILE_KEYWORDS = STATIC_JSON.get("sus_file_keywords")
 
 SUS_FILE_EXTENSIONS = STATIC_JSON.get("sus_file_extensions")
+
+SUS_LINKS = STATIC_JSON.get("sus_links", [])
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -55,21 +58,6 @@ def has_sus_text(content):
 def get_random_response(mention):
     bait = random.choice(DECOY_LINKS)
     return random.choice(ROAST_MESSAGES).format(mention=mention, bait=bait)
-
-def extract_video_id(message):
-    match = re.search(r"(?:v=|youtu\.be/)([a-zA-Z0-9_-]{11})", message)
-    return match.group(1) if match else None
-
-def is_rickroll(video_id):
-    try:
-        url = f"https://www.youtube.com/watch?v={video_id}"
-        resp = requests.get(f"https://noembed.com/embed?url={url}")
-        if resp.status_code == 200:
-            title = resp.json().get("title", "").lower()
-            return "rick astley" in title or "never gonna give you up" in title
-    except Exception as e:
-        print("Error checking RickRoll:", e)
-    return False
 
 def has_sus_rick_emoji(content):
     # Match all :emoji_name: things
@@ -102,19 +90,18 @@ async def on_message(message):
 
     content = message.content or ""
     gid = message.guild.id if message.guild else None
-    video_id = extract_video_id(content)
-    is_roll = video_id and is_rickroll(video_id)
+    has_link = any(link in content for link in SUS_LINKS)
     has_sticker = bool(message.stickers)
     has_emojis = has_sus_rick_emoji(content)
     has_sus_text_content = has_sus_text(content)
     has_sus_file, sus_filename = has_sus_file_upload(message)
     settings = guild_settings.get(gid, default_triggers)
 
-    if is_roll or has_sticker or has_emojis or has_sus_text_content or has_sus_file:
+    if has_link or has_sticker or has_emojis or has_sus_text_content or has_sus_file:
         try:
             await message.delete()
 
-            if is_roll and settings["video"]:
+            if has_link and settings["link"]:
                 roast = get_random_response(message.author.mention)
             elif has_sticker and settings["sticker"]:
                 roast = f"🎟️ {message.author.mention} tried to sneak a sticker past me... I SEE YOU 👁️\n<{random.choice(DECOY_LINKS)}>"
@@ -223,14 +210,20 @@ async def report_command(interaction: discord.Interaction, message: str):
         f.write(json.dumps(log_entry) + "\n")
 
     await interaction.response.send_message("✅ Your report has been logged. Thanks!", ephemeral=True)
-
-    # Optional: also send to you via DM
-    owner = await client.fetch_user(OWNER_ID)
-    if owner:
+    
+    report_channel = client.get_channel(REPORT_CHANNEL_ID)
+    if report_channel:
         try:
-            await owner.send(f"📨 New report from {interaction.user} in {interaction.guild.name}:\n```\n{message}\n```")
-        except:
-            print("❌ Could not DM the owner.")
+            embed = discord.Embed(
+                title="New Report",
+                description=message,
+                color=discord.Color.red()
+            )
+            embed.add_field(name="User", value=f"{interaction.user} (ID: {interaction.user.id})", inline=False)
+            embed.add_field(name="Guild", value=f"{interaction.guild.name} (ID: {interaction.guild.id})", inline=False)
+            await report_channel.send("New report received!", embed=embed)
+        except Exception as e:
+            print(f"❌ Could not send report to the report channel: {e}")
 
 @tree.command(name="ping", description="Check the bot's latency.")
 async def ping_command(interaction: discord.Interaction):

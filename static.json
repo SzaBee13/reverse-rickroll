@@ -60,11 +60,25 @@
     "json", "xml", "csv", "tsv", "yaml", "yml",
     "doc", "docx", "pdf", "ppt", "pptx", ".xls", ".xlsx"
   ],
+  "sus_links": [
+    "https://youtu.be/dQw4w9WgXcQ",
+    "https://youtu.be/oHg5SJYRHA0",
+    "https://youtu.be/IwzUs1IMdyQ",
+    "https://youtu.be/KxGRhd_iWuE",
+    "https://youtu.be/tVj0ZTS4WF4"
+  ],
+  "sus_gif_links": [
+    "https://media.giphy.com/media/3o7aD2saq1d2k4z0g0/giphy.gif",
+    "https://tenor.com/bItJt.gif",
+    "https://tenor.com/twvvjPpkwCv.gif",
+    "https://tenor.com/ixGyZvOTOhX.gif"
+  ],
   "default_triggers": {
     "emoji": true,
     "text": true,
     "sticker": true,
     "file": true,
-    "video": true
+    "link": true,
+    "gif": true
   }
 }
