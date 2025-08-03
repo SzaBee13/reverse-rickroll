@@ -23,17 +23,16 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Read version and set tags
-        id: version
+      - name: Set Docker tags
+        id: docker_tags
         run: |
           VERSION=$(cat VERSION.txt)
-          echo "Using version: $VERSION"
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          IMAGE_NAME=szabee13/reverse-rickroll
 
           if [[ "$VERSION" == *-beta ]]; then
-            echo "TAGS=${{ secrets.DOCKER_REPO }}:beta-latest,${{ secrets.DOCKER_REPO }}:${VERSION}" >> $GITHUB_ENV
+            echo "tags=$IMAGE_NAME:beta-latest,$IMAGE_NAME:$VERSION" >> $GITHUB_OUTPUT
           else
-            echo "TAGS=${{ secrets.DOCKER_REPO }}:latest,${{ secrets.DOCKER_REPO }}:${VERSION}" >> $GITHUB_ENV
+            echo "tags=$IMAGE_NAME:latest,$IMAGE_NAME:$VERSION" >> $GITHUB_OUTPUT
           fi
 
       - name: Build and push Docker image
@@ -41,4 +40,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ env.TAGS }}
+          tags: ${{ steps.docker_tags.outputs.tags }}
