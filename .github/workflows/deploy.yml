@@ -29,11 +29,12 @@ jobs:
           VERSION=$(cat VERSION.txt)
           IMAGE_NAME=szabee13/reverse-rickroll
 
-          if [[ "$VERSION" == *-beta ]]; then
+          if [[ "$VERSION" =~ -beta ]]; then
             echo "tags=$IMAGE_NAME:beta-latest,$IMAGE_NAME:$VERSION" >> $GITHUB_OUTPUT
           else
             echo "tags=$IMAGE_NAME:latest,$IMAGE_NAME:$VERSION" >> $GITHUB_OUTPUT
           fi
+
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5

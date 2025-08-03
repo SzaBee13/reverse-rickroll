@@ -23,12 +23,32 @@ jobs:
         run: |
           version=$(cat VERSION.txt)
           echo "version=$version" >> $GITHUB_OUTPUT
-          # Check if it's a beta
-          if [[ "$version" == *"-beta" ]]; then
+
+          # Detect if version is a prerelease (contains -beta)
+          if [[ "$version" == *"-beta"* ]]; then
             echo "is_prerelease=true" >> $GITHUB_OUTPUT
           else
             echo "is_prerelease=false" >> $GITHUB_OUTPUT
           fi
+
+          # Parse a nice release name:
+          # Example: 2.0.0-beta.1 -> "2.0 beta 1"
+          # Strip the patch and reformat the beta part
+          base_version=$(echo $version | sed -E 's/^([0-9]+\.[0-9]+)\.[0-9]+.*$/\1/')
+          prerelease_part=$(echo $version | grep -oP '(?<=-)[^.]+')   # gets 'beta' from -beta.1
+          prerelease_num=$(echo $version | grep -oP '(?<=-beta\.)[0-9]+' || echo "")
+
+          if [[ "$is_prerelease" == "true" ]]; then
+            if [[ -n "$prerelease_num" ]]; then
+              release_name="${base_version} ${prerelease_part} ${prerelease_num}"
+            else
+              release_name="${base_version} ${prerelease_part}"
+            fi
+          else
+            release_name="${version}"
+          fi
+
+          echo "release_name=$release_name" >> $GITHUB_OUTPUT
 
       - name: Get commit message
         id: get_commit_msg
@@ -55,7 +75,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: v${{ steps.get_version.outputs.version }}
-          release_name: v${{ steps.get_version.outputs.version }}
+          release_name: ${{ steps.get_version.outputs.release_name }}
           body: |
             ## Release Notes
             ${{ steps.get_commit_msg.outputs.commit_msg }}
