@@ -1,4 +1,4 @@
-name: Create Release Reverse RickRoll Bot 🌀
+name: Create Release
 
 on:
   push:
@@ -9,7 +9,7 @@ jobs:
   release:
     name: Create Release
     runs-on: ubuntu-latest
-    
+
     permissions:
       contents: write
       packages: read
@@ -23,6 +23,12 @@ jobs:
         run: |
           version=$(cat VERSION.txt)
           echo "version=$version" >> $GITHUB_OUTPUT
+          # Check if it's a beta
+          if [[ "$version" == *"-beta" ]]; then
+            echo "is_prerelease=true" >> $GITHUB_OUTPUT
+          else
+            echo "is_prerelease=false" >> $GITHUB_OUTPUT
+          fi
 
       - name: Get commit message
         id: get_commit_msg
@@ -53,7 +59,7 @@ jobs:
           body: |
             ## Release Notes
             ${{ steps.get_commit_msg.outputs.commit_msg }}
-            
+
             ## Docker Image
             You can pull the Docker image using:
             `docker pull szabee13/reverse-rickroll:${{ steps.get_version.outputs.version }}`
@@ -61,4 +67,4 @@ jobs:
             `docker pull szabee13/reverse-rickroll:latest`
             PLEASE: Read the [README](https://github.com/szabee13/reverse-rickroll/blob/main/README.md) and the [LICENSE](https://github.com/szabee13/reverse-rickroll/blob/main/LICENSE.md) before you use it.
           draft: false
-          prerelease: false
+          prerelease: ${{ steps.get_version.outputs.is_prerelease }}
