@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Documentation from "./pages/Documentation";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
+import Beta from "./pages/Beta";
 import Legal from "./pages/Legal";
 import License from "./pages/License";
 import { useState, useEffect } from "react";
@@ -15,6 +16,12 @@ function Invite() {
   window.location.href =
     "https://discord.com/oauth2/authorize?client_id=1384237022826336316";
   return <div></div>; // This component does not render anything
+}
+
+function InviteBeta() {
+  window.location.href =
+    "https://discord.com/oauth2/authorize?client_id=1401481064144441364";
+  return <div></div>
 }
 
 function Docker() {
@@ -55,6 +62,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/documentation" element={<Documentation />} />
+          <Route path="/beta" element={<Beta />} />
+          <Route path="/beta/invite" element={<InviteBeta />} />
           <Route path="/invite" element={<Invite />} />
           <Route path="/docker" element={<Docker />} />
           <Route path="/github" element={<GitHub />} />

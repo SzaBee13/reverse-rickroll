@@ -80,5 +80,13 @@
     "file": true,
     "link": true,
     "gif": true
+  },
+  "disabled_triggers": {
+    "emoji": false,
+    "text": false,
+    "sticker": false,
+    "file": false,
+    "link": false,
+    "gif": false
   }
 }

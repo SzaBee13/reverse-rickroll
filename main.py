@@ -43,6 +43,7 @@ tree = app_commands.CommandTree(client)
 
 guild_settings = {}
 default_triggers = STATIC_JSON.get("default_triggers")
+disabled_triggers = STATIC_JSON.get("disabled_triggers")
 
 def has_sus_file_upload(message):
     for attachment in message.attachments:
@@ -230,8 +231,8 @@ async def ping_command(interaction: discord.Interaction):
     latency = round(client.latency * 1000)
     await interaction.response.send_message(f"🏓 Pong! Latency: {latency}ms", ephemeral=True)
 
-@tree.command(name="reset", description="Reset the bot's settings for this server.")
-async def reset_command(interaction: discord.Interaction):
+@tree.command(name="enable", description="Enable all detection type.")
+async def enable_command(interaction: discord.Interaction):
     if not interaction.guild:
         await interaction.response.send_message(
             "❌ This command can only be used in a server!",
@@ -254,9 +255,37 @@ async def reset_command(interaction: discord.Interaction):
         json.dump(guild_settings, f, indent=2)
 
     await interaction.response.send_message(
-        "✅ Settings have been reset to default.",
+        "✅ All settings have been enabled.",
         ephemeral=True
     )
+
+@tree.command(name="disable", description="Disable all detection type")
+async def disable_command(interaction: discord.Integration):
+    if not interaction.guild:
+        await interaction.response.send_message(
+            "❌ This command can only be used in a server!",
+            ephemeral=True
+        )
+        return
+
+    if not interaction.user.guild_permissions.administrator:
+        await interaction.response.send_message(
+            "🚫 You must be an admin to use this command!",
+            ephemeral=True
+        )
+        return
+
+    gid = interaction.guild.id
+    guild_settings[gid] = disabled_triggers.copy()
+
+    # Write the updated settings back to the file
+    with open("settings.json", "w") as f:
+        json.dump(guild_settings, f, indent=2)
+
+    await interaction.response.send_message(
+        "✅ All settings have been disabled.",
+        ephemeral=True
+    ) 
 
 # If the bot gets kicked or removed from a server, remove its settings
 @client.event
