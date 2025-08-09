@@ -34,8 +34,8 @@ jobs:
 
           # Parse nice release name
           base_version=$(echo "$version" | sed -E 's/^([0-9]+\.[0-9]+)\.[0-9]+.*$/\1/')
-          prerelease_part=$(echo "$version" | grep -oP '(?<=-)[^.]+')
-          prerelease_num=$(echo "$version" | grep -oP '(?<=-beta\.)[0-9]+' || echo "")
+          prerelease_part=$(echo "$version" | grep -oP '(?<=-)[^.]+') || prerelease_part=""
+          prerelease_num=$(echo "$version" | grep -oP '(?<=-beta\.)[0-9]+') || prerelease_num=""
 
           if [[ "$is_prerelease" == "true" ]]; then
             if [[ -n "$prerelease_num" ]]; then
