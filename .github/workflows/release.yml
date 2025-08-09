@@ -19,35 +19,35 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Read version from VERSION.txt
-      id: get_version
-      run: |
-        version=$(cat VERSION.txt)
-        echo "version=$version" >> $GITHUB_OUTPUT
+        id: get_version
+        run: |
+          version=$(cat VERSION.txt)
+          echo "version=$version" >> $GITHUB_OUTPUT
 
-        # Detect prerelease
-        if [[ "$version" == *"-beta"* ]]; then
-          is_prerelease=true
-        else
-          is_prerelease=false
-        fi
-        echo "is_prerelease=$is_prerelease" >> $GITHUB_OUTPUT
-
-        # Parse nice release name
-        base_version=$(echo "$version" | sed -E 's/^([0-9]+\.[0-9]+)\.[0-9]+.*$/\1/')
-        prerelease_part=$(echo "$version" | grep -oP '(?<=-)[^.]+')
-        prerelease_num=$(echo "$version" | grep -oP '(?<=-beta\.)[0-9]+' || echo "")
-
-        if [[ "$is_prerelease" == "true" ]]; then
-          if [[ -n "$prerelease_num" ]]; then
-            release_name="${base_version} ${prerelease_part} ${prerelease_num}"
+          # Detect prerelease
+          if [[ "$version" == *"-beta"* ]]; then
+            is_prerelease=true
           else
-            release_name="${base_version} ${prerelease_part}"
+            is_prerelease=false
           fi
-        else
-          release_name="${version}"
-        fi
+          echo "is_prerelease=$is_prerelease" >> $GITHUB_OUTPUT
 
-        echo "release_name=$release_name" >> $GITHUB_OUTPUT
+          # Parse nice release name
+          base_version=$(echo "$version" | sed -E 's/^([0-9]+\.[0-9]+)\.[0-9]+.*$/\1/')
+          prerelease_part=$(echo "$version" | grep -oP '(?<=-)[^.]+')
+          prerelease_num=$(echo "$version" | grep -oP '(?<=-beta\.)[0-9]+' || echo "")
+
+          if [[ "$is_prerelease" == "true" ]]; then
+            if [[ -n "$prerelease_num" ]]; then
+              release_name="${base_version} ${prerelease_part} ${prerelease_num}"
+            else
+              release_name="${base_version} ${prerelease_part}"
+            fi
+          else
+            release_name="${version}"
+          fi
+
+          echo "release_name=$release_name" >> $GITHUB_OUTPUT
 
       - name: Get commit message
         id: get_commit_msg
