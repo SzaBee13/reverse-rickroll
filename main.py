@@ -98,7 +98,7 @@ async def on_message(message):
     has_sus_file, sus_filename = has_sus_file_upload(message)
     settings = guild_settings.get(gid, default_triggers)
 
-    if has_link or has_sticker or has_emojis or has_sus_text_content or has_sus_file:
+    if (has_link and settings["link"]) or (has_sticker and settings["sticker"]) or (has_emojis and settings["emoji"]) or (has_sus_text_content and settings["text"]) or (has_sus_file and settings["file"]):
         try:
             await message.delete()
 
@@ -120,16 +120,6 @@ async def on_message(message):
 
         except Exception as e:
             print("Error:", e)
-
-async def handle_rickroll(message):
-    try:
-        await message.delete()
-        roast = get_random_response(message.author.mention)
-        await message.channel.send(roast)
-    except discord.Forbidden:
-        print("❌ Missing permissions to delete messages.")
-    except Exception as e:
-        print(f"⚠️ Error: {e}")
 
 @tree.command(name="settings", description="Update detection settings for your server!")
 @app_commands.describe(

@@ -1,0 +1,4 @@
+<!-- Reverse RickRoll Bot -->
+<!-- https://reverse-rickroll.pages.dev -->
+<!-- Open Source Discord Bot -->
+<!-- Author: szabee13 -->

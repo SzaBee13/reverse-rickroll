@@ -1,0 +1,19 @@
+# Reverse RickRoll Bot - Robots.txt
+# Allow search engines to crawl the website
+
+User-agent: *
+Allow: /
+Disallow: /private/
+Disallow: /admin/
+
+# Specific crawlers
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Point to sitemap
+Sitemap: https://reverse-rickroll.pages.dev/sitemap.xml

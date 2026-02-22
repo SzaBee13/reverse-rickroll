@@ -1,0 +1,5 @@
+Contact: me@szabee.me
+Contact: https://discord.gg/McyYZEpf57
+Expires: 2027-02-01T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://reverse-rickroll.pages.dev/.well-known/security.txt
