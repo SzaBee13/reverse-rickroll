@@ -100,20 +100,26 @@ async def on_message(message):
 
     if (has_link and settings["link"]) or (has_sticker and settings["sticker"]) or (has_emojis and settings["emoji"]) or (has_sus_text_content and settings["text"]) or (has_sus_file and settings["file"]):
         try:
-            await message.delete()
-
             if has_link and settings["link"]:
+                await message.delete()
                 roast = get_random_response(message.author.mention)
             elif has_sticker and settings["sticker"]:
+                await message.delete()
                 roast = f"🎟️ {message.author.mention} tried to sneak a sticker past me... I SEE YOU 👁️\n<{random.choice(DECOY_LINKS)}>"
             elif has_emojis and settings["emoji"]:
+                await message.delete()
                 roast = f"😏 Emojis won’t save you, {message.author.mention}… reverse time: <{random.choice(DECOY_LINKS)}>"
             elif has_sus_text_content and settings["text"]:
+                await message.delete()
                 roast = f"📜 Quoting ancient meme scrolls won’t save you, {message.author.mention}!\n<{random.choice(DECOY_LINKS)}>"
             elif has_sus_file and settings["file"]:
+                await message.delete()
                 roast = f"📁 A wild *sussy file* appeared: `{sus_filename}`\n{message.author.mention}, reverse time!\n<{random.choice(DECOY_LINKS)}>"
             else:
-                return  # No valid trigger found
+                return  # No valid trigger foud
+            
+            if not roast:
+                return
             msg = await message.channel.send(roast)
             await msg.add_reaction("💀")
             await msg.add_reaction("👀")

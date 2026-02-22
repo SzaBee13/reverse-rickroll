@@ -24,19 +24,18 @@ jobs:
           version=$(cat VERSION.txt)
           echo "version=$version" >> $GITHUB_OUTPUT
 
-          # Detect if version is a prerelease (contains -beta)
+          # Detect prerelease
           if [[ "$version" == *"-beta"* ]]; then
-            echo "is_prerelease=true" >> $GITHUB_OUTPUT
+            is_prerelease=true
           else
-            echo "is_prerelease=false" >> $GITHUB_OUTPUT
+            is_prerelease=false
           fi
+          echo "is_prerelease=$is_prerelease" >> $GITHUB_OUTPUT
 
-          # Parse a nice release name:
-          # Example: 2.0.0-beta.1 -> "2.0 beta 1"
-          # Strip the patch and reformat the beta part
-          base_version=$(echo $version | sed -E 's/^([0-9]+\.[0-9]+)\.[0-9]+.*$/\1/')
-          prerelease_part=$(echo $version | grep -oP '(?<=-)[^.]+')   # gets 'beta' from -beta.1
-          prerelease_num=$(echo $version | grep -oP '(?<=-beta\.)[0-9]+' || echo "")
+          # Parse nice release name
+          base_version=$(echo "$version" | sed -E 's/^([0-9]+\.[0-9]+)\.[0-9]+.*$/\1/')
+          prerelease_part=$(echo "$version" | grep -oP '(?<=-)[^.]+') || prerelease_part=""
+          prerelease_num=$(echo "$version" | grep -oP '(?<=-beta\.)[0-9]+') || prerelease_num=""
 
           if [[ "$is_prerelease" == "true" ]]; then
             if [[ -n "$prerelease_num" ]]; then
